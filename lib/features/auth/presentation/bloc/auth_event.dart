@@ -21,5 +21,16 @@ class LoginEvent extends AuthEvent {
   List<Object?> get props => [email, password];
 }
 
+// Event for signing up with email and password
+class SignUpEvent extends AuthEvent {
+  final String email;
+  final String password;
+
+  const SignUpEvent({required this.email, required this.password});
+
+  @override
+  List<Object?> get props => [email, password];
+}
+
 // Event for logging out
 class LogoutEvent extends AuthEvent {}

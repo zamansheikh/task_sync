@@ -36,6 +36,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
     });
 
+    // Handle user signup
+    on<SignUpEvent>((event, emit) async {
+      emit(AuthLoading());
+      final Either<Failure, UserModel> signupResult =
+          await loginUseCase(event.email, event.password);
+
+      signupResult.fold(
+        (failure) => emit(AuthError('Signup failed. Please try again.')),
+        (user) => emit(AuthenticatedState(user)),
+      );
+    });
+
     // Handle user login
     on<LoginEvent>((event, emit) async {
       emit(AuthLoading());

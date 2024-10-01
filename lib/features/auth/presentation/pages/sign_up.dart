@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:task_sync/core/utils/utils.dart';
 import 'package:task_sync/features/auth/data/datasources/auth_remote_data_source.dart';
+import 'package:task_sync/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:task_sync/features/auth/presentation/bloc/auth_event.dart';
+import 'package:task_sync/features/auth/presentation/bloc/auth_state.dart';
 
 import 'package:task_sync/features/auth/presentation/pages/widgets/button.dart';
 import 'package:task_sync/features/auth/presentation/pages/widgets/signup_input_form.dart';
@@ -19,155 +23,128 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  bool nameFocus = false;
-  bool emailFocus = false;
-  bool passwordFocus = false;
-  bool correctEmail = false;
-  bool correctName = false;
-  bool showPassword = true;
-  bool loading = false;
   final emailController = TextEditingController();
   final nameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void createAccount() {
-    if (!correctName) {
-      Utils.showSnackBar(
-          context,
-          'Warning',
-          'Enter Correct Name',
-          const Icon(
-            FontAwesomeIcons.triangleExclamation,
-            color: Colors.pink,
-          ));
-      return;
-    }
-    if (!correctEmail) {
-      Utils.showSnackBar(
-          context,
-          'Warning',
-          'Enter Correct Email',
-          const Icon(
-            FontAwesomeIcons.triangleExclamation,
-            color: Colors.pink,
-          ));
-      return;
-    }
-    if (passwordController.text.toString().length < 6) {
-      Utils.showSnackBar(
-          context,
-          'Warning',
-          'Password length should greater than 5',
-          const Icon(
-            FontAwesomeIcons.triangleExclamation,
-            color: Colors.pink,
-          ));
-      return;
-    }
-    sl<AuthRemoteDataSource>().signUpWithEmailAndPassword(
-        emailController.text.toString(), passwordController.text.toString());
-    // FirebaseService.createAccount();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: black,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 30,
-                ),
-                Row(
-                  children: [
-                    GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: CustomBackButton()),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Text(
-                      'Sign up',
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-                const Text(
-                  'Sign up with one of the following options.',
-                  style: TextStyle(color: Colors.grey),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () =>
-                          sl<AuthRemoteDataSource>().signUpWithGoogle(),
-                      child: const IconContainer(
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthError) {
+          Utils.showSnackBar(
+              context,
+              state.message,
+              state.message,
+              const Icon(
+                FontAwesomeIcons.triangleExclamation,
+                color: Colors.red,
+              ));
+        }
+      },
+      child: Scaffold(
+        backgroundColor: black,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    children: [
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: CustomBackButton()),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text(
+                        'Sign up',
+                        style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  const Text(
+                    'Sign up with one of the following options.',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () =>
+                            sl<AuthRemoteDataSource>().signUpWithGoogle(),
+                        child: const IconContainer(
+                            widget: Icon(
+                          FontAwesomeIcons.google,
+                          size: 18,
+                          color: Colors.white,
+                        )),
+                      ),
+                      const IconContainer(
                           widget: Icon(
-                        FontAwesomeIcons.google,
-                        size: 18,
+                        Icons.apple_rounded,
                         color: Colors.white,
                       )),
-                    ),
-                    const IconContainer(
-                        widget: Icon(
-                      Icons.apple_rounded,
-                      color: Colors.white,
-                    )),
-                  ],
-                ),
-                SignUpForm(
-                  nameController: nameController,
-                  emailController: emailController,
-                  passController: passwordController,
-                ),
-                AccountButton(
-                  text: "Create Account",
-                  loading: false,
-                  onTap: () {
-                    createAccount();
-                  },
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                Align(
-                    alignment: Alignment.center,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, Routes.signInScreen);
-                      },
-                      child: RichText(
-                          text: const TextSpan(children: [
-                        TextSpan(
-                            text: 'Already have an account? ',
-                            style: TextStyle(
-                              color: Colors.grey,
-                            )),
-                        TextSpan(
-                            text: 'Login',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ))
-                      ])),
-                    ))
-              ],
+                    ],
+                  ),
+                  SignUpForm(
+                    nameController: nameController,
+                    emailController: emailController,
+                    passController: passwordController,
+                  ),
+                  AccountButton(
+                    text: "Create Account",
+                    loading: false,
+                    onTap: () {
+                      BlocProvider.of<AuthBloc>(context).add(
+                        SignUpEvent(
+                          email: emailController.text.trim(),
+                          password: passwordController.text,
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  Align(
+                      alignment: Alignment.center,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, Routes.signInScreen);
+                        },
+                        child: RichText(
+                            text: const TextSpan(children: [
+                          TextSpan(
+                              text: 'Already have an account? ',
+                              style: TextStyle(
+                                color: Colors.grey,
+                              )),
+                          TextSpan(
+                              text: 'Login',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ))
+                        ])),
+                      ))
+                ],
+              ),
             ),
           ),
         ),
