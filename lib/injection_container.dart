@@ -14,6 +14,7 @@ import 'package:task_sync/features/auth/domain/repositories/auth_repository.dart
 import 'package:task_sync/features/auth/domain/usecases/check_auth_status_use_case.dart';
 import 'package:task_sync/features/auth/domain/usecases/login_use_case.dart';
 import 'package:task_sync/features/auth/domain/usecases/logout_use_case.dart';
+import 'package:task_sync/features/splash/cubit/splash_cubit.dart';
 import 'package:task_sync/features/task/data/repositories/task_repository_impl.dart';
 import 'package:task_sync/features/task/domain/repositories/task_repository.dart';
 import 'package:task_sync/features/task/domain/usecases/get_all_tasks_usecase.dart';
@@ -69,6 +70,9 @@ Future<void> init() async {
   sl.registerLazySingleton(() => UpdateTaskUseCase(sl()));
 
   // Bloc and Cubit registrations
+  sl.registerFactory(() => SplashCubit(
+        sl(),
+      ));
   sl.registerFactory(() => HomeCubit(
         authBloc: sl(),
         taskBloc: sl(),

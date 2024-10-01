@@ -7,7 +7,7 @@ sealed class SplashState extends Equatable {
   List<Object> get props => [];
 }
 
-final class SplashInitial extends SplashState {}
+final class SplashError extends SplashState {}
 
 final class SplashLoggedIn extends SplashState {
   final String user;
@@ -17,3 +17,7 @@ final class SplashLoggedIn extends SplashState {
   @override
   List<Object> get props => [user];
 }
+
+final class SplashLoggedOut extends SplashState {}
+
+final class SplashLoading extends SplashState {}

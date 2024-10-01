@@ -30,6 +30,13 @@ class _SplashScreenState extends State<SplashScreen> {
             (Route<dynamic> route) => false,
           );
         }
+        if (state is SplashError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('An error occurred'),
+            ),
+          );
+        }
       },
       child: Scaffold(
         backgroundColor: black,
