@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1049314395273",
+    "project_id": "task-sync-fcece",
+    "storage_bucket": "task-sync-fcece.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049314395273:android:d0b3cd3199e974e8263258",
+        "android_client_info": {
+          "package_name": "com.decodersfamily.task_sync"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1049314395273-eranicooakqhstt2d59pdg4or229fad4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6_TBK7HYHlVUh1vcV1alHoVxBaLHGbsk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1049314395273-eranicooakqhstt2d59pdg4or229fad4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
