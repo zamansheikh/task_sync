@@ -25,8 +25,8 @@ class _SignInState extends State<SignIn> {
   bool correctEmail = false;
   bool showPassword = true;
   bool loading = false;
-  final email = TextEditingController();
-  final password = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   void loginAccount() {
     if (!correctEmail) {
@@ -40,7 +40,7 @@ class _SignInState extends State<SignIn> {
           ));
       return;
     }
-    if (password.value.text.toString().length < 6) {
+    if (passwordController.value.text.toString().length < 6) {
       Utils.showSnackBar(
           context,
           'Warning',
@@ -53,38 +53,12 @@ class _SignInState extends State<SignIn> {
     }
 
     sl<AuthRemoteDataSource>().loginWithEmailAndPassword(
-        email.text.toString(), password.text.toString());
+        emailController.text.toString(), passwordController.text.toString());
     // FirebaseService.loginAccount();
-  }
-
-  void setLoading(bool value) {
-    loading = value;
-  }
-
-  void validateEmail() {
-    correctEmail = Utils.validateEmail(email.value.text.toString());
-  }
-
-  void onFocusEmail() {
-    emailFocus = true;
-    passwordFocus = false;
-  }
-
-  void onFocusPassword() {
-    emailFocus = false;
-    passwordFocus = true;
-  }
-
-  void onTapOutside(BuildContext context) {
-    emailFocus = false;
-    passwordFocus = false;
-    FocusScope.of(context).unfocus();
   }
 
   @override
   Widget build(BuildContext context) {
-    final nameController = TextEditingController();
-    final passController = TextEditingController();
     return Scaffold(
       backgroundColor: black,
       body: SafeArea(
@@ -143,6 +117,8 @@ class _SignInState extends State<SignIn> {
                   ],
                 ),
                 SignInForm(
+                  emailController: emailController,
+                  passController: passwordController,
                 ),
                 AccountButton(
                   text: "Login Account",
