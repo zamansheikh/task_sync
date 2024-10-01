@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:task_sync/core/utils/utils.dart';
 import 'package:task_sync/features/auth/data/datasources/auth_remote_data_source.dart';
-import 'package:task_sync/features/auth/presentation/pages/components/appbar.dart';
-import 'package:task_sync/features/auth/presentation/pages/components/button.dart';
-import 'package:task_sync/features/auth/presentation/pages/components/signup_options.dart';
+import 'package:task_sync/features/auth/presentation/pages/widgets/appbar.dart';
+import 'package:task_sync/features/auth/presentation/pages/widgets/button.dart';
+import 'package:task_sync/features/auth/presentation/pages/widgets/signup_options.dart';
 import 'package:task_sync/injection_container.dart';
 import 'package:task_sync/routes/routes.dart';
 
