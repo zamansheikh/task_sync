@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:task_sync/core/utils/utils.dart';
 import 'package:task_sync/features/task/data/datasources/db_helper.dart';
@@ -23,67 +22,70 @@ class TaskBody extends StatefulWidget {
 
 class _TaskBodyState extends State<TaskBody> {
   final DbHelper database = DbHelper();
-  RxInt selectedImageIndex = 1.obs;
-  RxBool lowPeriority = true.obs;
-  RxBool titleFocus = false.obs;
-  RxBool categoryFocus = false.obs;
-  RxBool descriptionFocus = false.obs;
-  RxBool loading = false.obs;
-  RxDouble progress = 0.0.obs;
-  Rx<TextEditingController> title = TextEditingController().obs;
-  Rx<TextEditingController> description = TextEditingController().obs;
-  Rx<TextEditingController> category = TextEditingController().obs;
-  RxString time = ''.obs;
-  RxString date = ''.obs;
+  int selectedImageIndex = 1;
+  bool lowPeriority = true;
+  bool titleFocus = false;
+  bool categoryFocus = false;
+  bool descriptionFocus = false;
+  bool loading = false;
+  double progress = 0.0;
+  TextEditingController title = TextEditingController();
+  TextEditingController description = TextEditingController();
+  TextEditingController category = TextEditingController();
+  String time = '';
+  String date = '';
   insertDataInDatabase() async {
     try {
-      loading.value = true;
+      loading = true;
       await DbHelper()
           .insert(
         TaskModel(
-            progress: progress.value.toInt().toString(),
+            progress: progress.toInt().toString(),
             status: 'unComplete',
             id: DateTime.now().microsecondsSinceEpoch.toString(),
-            time: time.value,
-            date: date.value,
-            periority: lowPeriority.value ? 'High' : 'Low',
-            description: description.value.text.toString(),
-            category: category.value.text.toString(),
-            title: title.value.text.toString(),
-            image: Utils.getImage()[selectedImageIndex.value]!,
+            time: time,
+            date: date,
+            periority: lowPeriority ? 'High' : 'Low',
+            description: description.text.toString(),
+            category: category.text.toString(),
+            title: title.text.toString(),
+            image: Utils.getImage()[selectedImageIndex]!,
             show: 'yes'),
         "UID for USER",
       )
           .then((value) async {
         // homeController.getTaskData();
-        title.value.clear();
-        category.value.clear();
-        date.value = '';
-        time.value = '';
-        progress.value = 0.0;
-        selectedImageIndex.value = 1;
+        title.clear();
+        category.clear();
+        date = '';
+        time = '';
+        progress = 0.0;
+        selectedImageIndex = 1;
         await Future.delayed(const Duration(milliseconds: 700));
-        loading.value = false;
+        loading = false;
 
-        Get.back();
+        // Get.back();
       }).onError((error, stackTrace) {
-        loading.value = false;
+        loading = false;
       });
     } catch (e) {
-      loading.value = false;
+      loading = false;
       Utils.showSnackBar(
-          'Warning',
-          e.toString(),
-          const Icon(
-            FontAwesomeIcons.triangleExclamation,
-            color: Colors.pinkAccent,
-          ));
+        context,
+        'Warning',
+        e.toString(),
+        const Icon(
+          FontAwesomeIcons.triangleExclamation,
+          color: Colors.pinkAccent,
+        ),
+      );
     }
   }
 
   showProgressPicker(BuildContext context) {
-    if (title.value.text.toString().isEmpty) {
+    if (title.text.toString().isEmpty) {
       Utils.showSnackBar(
+          context,
           'Warning',
           'Add title of your task',
           const Icon(
@@ -92,8 +94,9 @@ class _TaskBodyState extends State<TaskBody> {
           ));
       return;
     }
-    if (category.value.text.toString().isEmpty) {
+    if (category.text.toString().isEmpty) {
       Utils.showSnackBar(
+          context,
           'Warning',
           'Add category of your task',
           const Icon(
@@ -102,8 +105,9 @@ class _TaskBodyState extends State<TaskBody> {
           ));
       return;
     }
-    if (date.value.isEmpty) {
+    if (date.isEmpty) {
       Utils.showSnackBar(
+          context,
           'Warning',
           'Add date for your task',
           const Icon(
@@ -112,8 +116,9 @@ class _TaskBodyState extends State<TaskBody> {
           ));
       return;
     }
-    if (int.parse(Utils.getDaysDiffirece(date.value)) < 0) {
+    if (int.parse(Utils.getDaysDiffirece(date)) < 0) {
       Utils.showSnackBar(
+          context,
           'Warning',
           'Please select correct date',
           const Icon(
@@ -133,7 +138,7 @@ class _TaskBodyState extends State<TaskBody> {
       lastDate: DateTime(2025),
     );
     if (pickedDate != null) {
-      date.value = Utils.formateDate(pickedDate);
+      date = Utils.formateDate(pickedDate);
     }
   }
 
@@ -142,7 +147,7 @@ class _TaskBodyState extends State<TaskBody> {
         await showTimePicker(context: context, initialTime: TimeOfDay.now());
     if (pickedTime != null) {
       DateFormat dateFormat = DateFormat('hh:mm a');
-      time.value = dateFormat.format(DateTime(
+      time = dateFormat.format(DateTime(
         2323,
         1,
         1,
@@ -153,35 +158,35 @@ class _TaskBodyState extends State<TaskBody> {
   }
 
   setTitleFocus() {
-    titleFocus.value = true;
-    categoryFocus.value = false;
-    descriptionFocus.value = false;
+    titleFocus = true;
+    categoryFocus = false;
+    descriptionFocus = false;
   }
 
   setCategoryFocus() {
-    titleFocus.value = false;
-    categoryFocus.value = true;
-    descriptionFocus.value = false;
+    titleFocus = false;
+    categoryFocus = true;
+    descriptionFocus = false;
   }
 
   setDescriptionFocus() {
-    titleFocus.value = false;
-    categoryFocus.value = false;
-    descriptionFocus.value = true;
+    titleFocus = false;
+    categoryFocus = false;
+    descriptionFocus = true;
   }
 
   setPeriority(bool value) {
-    lowPeriority.value = value;
+    lowPeriority = value;
   }
 
   setImage(int index) {
-    selectedImageIndex.value = index;
+    selectedImageIndex = index;
   }
 
   onTapOutside() {
-    titleFocus.value = false;
-    categoryFocus.value = false;
-    descriptionFocus.value = false;
+    titleFocus = false;
+    categoryFocus = false;
+    descriptionFocus = false;
   }
 
   @override
@@ -191,71 +196,74 @@ class _TaskBodyState extends State<TaskBody> {
       height: 750,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: SingleChildScrollView(
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const UpperBody(),
-          ImageContainerList(),
-          const SizedBox(
-            height: 20,
-          ),
-          TitlePeriority(),
-          const SizedBox(
-            height: 20,
-          ),
-          const Text(
-            'Category',
-            style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Obx(
-            () => AddInputField(
-              controller: category.value,
-              focus: categoryFocus.value,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const UpperBody(),
+            ImageContainerList(),
+            const SizedBox(
+              height: 20,
+            ),
+            TitlePeriority(),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              'Category',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            AddInputField(
+              controller: category,
+              focus: categoryFocus,
               onTap: () => setCategoryFocus(),
               onTapOutSide: () => onTapOutside(),
               hint: 'Pick a Category',
               width: size.width,
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Text(
-            'Description',
-            style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Obx(
-            () => AddInputField(
-              controller: description.value,
-              focus: descriptionFocus.value,
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              'Description',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            AddInputField(
+              controller: description,
+              focus: descriptionFocus,
               onTap: () => setDescriptionFocus(),
               onTapOutSide: () => onTapOutside(),
               hint: 'Enter description of your task (optional)',
               width: size.width,
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          DateTimeRow(),
-          const SizedBox(
-            height: 20,
-          ),
-          Obx(() => AccountButton(
-                text: 'Create Task',
-                loading: loading.value,
-                onTap: () async {
-                  // controller.insertDataInDatabase();
-                  showProgressPicker(context);
-                },
-              ))
-        ]),
+            const SizedBox(
+              height: 20,
+            ),
+            DateTimeRow(),
+            const SizedBox(
+              height: 20,
+            ),
+            AccountButton(
+              text: 'Create Task',
+              loading: loading,
+              onTap: () async {
+                // controller.insertDataInDatabase();
+                showProgressPicker(context);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 import '../../../../core/constants/app_color.dart';
 import '../../../../core/utils/utils.dart';
@@ -16,7 +15,7 @@ class ProgressContainer extends StatefulWidget {
 }
 
 class _ProgressContainerState extends State<ProgressContainer> {
-  RxList list = [].obs;
+  List list = [];
   @override
   Widget build(BuildContext context) {
     return Container(

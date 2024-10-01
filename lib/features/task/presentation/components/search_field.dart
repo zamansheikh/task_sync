@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
-
 import '../../../../core/constants/app_color.dart';
 import '../../../../core/constants/app_icons.dart';
 import '../../../auth/presentation/sign_up/components/textfield_sufiix.dart';
@@ -14,26 +12,26 @@ class SearchField extends StatefulWidget {
 }
 
 class _SearchFieldState extends State<SearchField> {
-  RxBool focus = false.obs;
-  RxBool hasText = false.obs;
-  final searchController = TextEditingController().obs;
+  bool focus = false;
+  bool hasText = false;
+  final searchController = TextEditingController();
   onTapOutside(BuildContext context) {
-    focus.value = false;
+    focus = false;
     FocusScope.of(context).unfocus();
   }
 
   onClear(BuildContext context) {
-    searchController.value.text = '';
-    hasText.value = false;
+    searchController.text = '';
+    hasText = false;
     onTapOutside(context);
   }
 
   onTapField() {
-    focus.value = true;
+    focus = true;
   }
 
   checkText() {
-    hasText.value = searchController.value.text.toString().isNotEmpty;
+    hasText = searchController.value.text.toString().isNotEmpty;
   }
 
   @override
@@ -44,7 +42,7 @@ class _SearchFieldState extends State<SearchField> {
       padding: const EdgeInsets.all(1),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        gradient: focus.value
+        gradient: focus
             ? const LinearGradient(colors: [
                 Colors.purpleAccent,
                 Colors.pink,
@@ -52,7 +50,7 @@ class _SearchFieldState extends State<SearchField> {
             : null,
       ),
       child: TextFormField(
-        controller: searchController.value,
+        controller: searchController,
         onTap: onTapField,
         onTapOutside: (event) {
           onTapOutside(context);
@@ -75,14 +73,14 @@ class _SearchFieldState extends State<SearchField> {
               color: Colors.grey,
             ),
           ),
-          suffixIcon: Obx(() => hasText.value
+          suffixIcon: hasText
               ? GestureDetector(
                   onTap: () => onClear(context),
                   child: const TextFieldSufix(
                     icon: Icons.clear,
                   ),
                 )
-              : const SizedBox()),
+              : const SizedBox(),
           fillColor: primaryColor,
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),

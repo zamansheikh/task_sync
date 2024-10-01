@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
 import '../../../../../core/constants/app_color.dart';
 
 class ProgressPicker {
@@ -32,22 +30,22 @@ class ProgressPicker {
                   ),
                   const Spacer(),
                   Text(
-                      '100 loading%',
-                      style: const TextStyle(
-                          color: Colors.white70, fontWeight: FontWeight.bold),
-                    ),
+                    '100 loading%',
+                    style: const TextStyle(
+                        color: Colors.white70, fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
             ),
-            Obx(() => Slider(
-                  min: 0.0,
-                  max: 100.0,
-                  activeColor: Colors.pinkAccent,
-                  value: 14.4,//infuture use progress.value
-                  onChanged: (value) {
-                    // controller.progress.value = value;
-                  },
-                )),
+            Slider(
+              min: 0.0,
+              max: 100.0,
+              activeColor: Colors.pinkAccent,
+              value: 14.4, //infuture use progress.value
+              onChanged: (value) {
+                // controller.progress.value = value;
+              },
+            ),
             const SizedBox(
               height: 10,
             ),
@@ -58,7 +56,7 @@ class ProgressPicker {
                   const Spacer(),
                   TextButton(
                       onPressed: () {
-                        Get.back();
+                        // Get.back();
                       },
                       child: const Text(
                         "Cancel",
@@ -66,7 +64,7 @@ class ProgressPicker {
                       )),
                   TextButton(
                       onPressed: () {
-                        Get.back();
+                        // Get.back();
                         // controller.insertDataInDatabase();
                       },
                       child: const Text(

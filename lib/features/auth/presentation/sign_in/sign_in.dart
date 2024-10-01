@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
 import 'package:task_sync/core/utils/utils.dart';
 import 'package:task_sync/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:task_sync/features/auth/presentation/sign_up/components/button.dart';
@@ -32,6 +31,7 @@ class _SignInState extends State<SignIn> {
   void loginAccount() {
     if (!correctEmail) {
       Utils.showSnackBar(
+          context,
           'Warning',
           'Enter Correct Email',
           const Icon(
@@ -42,6 +42,7 @@ class _SignInState extends State<SignIn> {
     }
     if (password.value.text.toString().length < 6) {
       Utils.showSnackBar(
+          context,
           'Warning',
           'Password length should greater than 5',
           const Icon(
@@ -107,14 +108,12 @@ class _SignInState extends State<SignIn> {
                 ),
                 const SignUpOptions(),
                 SignInForm(),
-                Obx(
-                  () => AccountButton(
-                    text: "Login Account",
-                    loading: loading,
-                    onTap: () {
-                      loginAccount();
-                    },
-                  ),
+                AccountButton(
+                  text: "Login Account",
+                  loading: loading,
+                  onTap: () {
+                    loginAccount();
+                  },
                 ),
                 const SizedBox(
                   height: 40,
@@ -122,7 +121,9 @@ class _SignInState extends State<SignIn> {
                 Align(
                     alignment: Alignment.center,
                     child: GestureDetector(
-                      onTap: () => Get.toNamed(Routes.signUpScreen),
+                      onTap: () {
+                        Navigator.pushNamed(context, Routes.signUpScreen);
+                      },
                       child: RichText(
                           text: const TextSpan(children: [
                         TextSpan(

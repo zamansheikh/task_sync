@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../../../../../core/constants/app_images.dart';
 import 'image_container.dart';
@@ -12,29 +11,31 @@ class ImageContainerList extends StatefulWidget {
 }
 
 class _ImageContainerListState extends State<ImageContainerList> {
-    RxInt selectedImageIndex = 1.obs;
+  int selectedImageIndex = 1;
   setImage(int index) {
-    selectedImageIndex.value = index;
+    selectedImageIndex = index;
   }
+
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Obx(() => ImageContainer(
-          onTap: ()=>setImage(1),
-          image: AppImage.back2, focus: selectedImageIndex.value==1,
-        ),),
-        Obx(() => ImageContainer(
-          focus: selectedImageIndex.value==2,
-          onTap: ()=>setImage(2),
+        ImageContainer(
+          onTap: () => setImage(1),
+          image: AppImage.back2,
+          focus: selectedImageIndex == 1,
+        ),
+        ImageContainer(
+          focus: selectedImageIndex == 2,
+          onTap: () => setImage(2),
           image: AppImage.back3,
-        ),),
-        Obx(() => ImageContainer(
-          focus: selectedImageIndex.value==3,
-          onTap: ()=>setImage(3),
+        ),
+        ImageContainer(
+          focus: selectedImageIndex == 3,
+          onTap: () => setImage(3),
           image: AppImage.back1,
-        ),),
+        )
       ],
     );
   }

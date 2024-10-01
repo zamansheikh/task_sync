@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:task_sync/features/task/presentation/new_task/components/add_fild.dart';
 import 'package:task_sync/features/task/presentation/new_task/components/periority_container.dart';
-
-import 'add_fild.dart';
 
 class TitlePeriority extends StatefulWidget {
   const TitlePeriority({super.key});
@@ -12,44 +10,44 @@ class TitlePeriority extends StatefulWidget {
 }
 
 class _TitlePeriorityState extends State<TitlePeriority> {
-  RxInt selectedImageIndex = 1.obs;
-  RxBool lowPeriority = true.obs;
-  RxBool titleFocus = false.obs;
-  RxBool categoryFocus = false.obs;
-  RxBool descriptionFocus = false.obs;
-  RxBool loading = false.obs;
-  RxDouble progress = 0.0.obs;
-  Rx<TextEditingController> title = TextEditingController().obs;
-  Rx<TextEditingController> description = TextEditingController().obs;
-  Rx<TextEditingController> category = TextEditingController().obs;
-  RxString time = ''.obs;
-  RxString date = ''.obs;
+  int selectedImageIndex = 1;
+  bool lowPeriority = true;
+  bool titleFocus = false;
+  bool categoryFocus = false;
+  bool descriptionFocus = false;
+  bool loading = false;
+  double progress = 0.0;
+  TextEditingController title = TextEditingController();
+  TextEditingController description = TextEditingController();
+  TextEditingController category = TextEditingController();
+  String time = '';
+  String date = '';
   setCategoryFocus() {
-    titleFocus.value = false;
-    categoryFocus.value = true;
-    descriptionFocus.value = false;
+    titleFocus = false;
+    categoryFocus = true;
+    descriptionFocus = false;
   }
 
   setDescriptionFocus() {
-    titleFocus.value = false;
-    categoryFocus.value = false;
-    descriptionFocus.value = true;
+    titleFocus = false;
+    categoryFocus = false;
+    descriptionFocus = true;
   }
 
   setPeriority(bool value) {
-    lowPeriority.value = value;
+    lowPeriority = value;
   }
 
   setTitleFocus() {
-    titleFocus.value = true;
-    categoryFocus.value = false;
-    descriptionFocus.value = false;
+    titleFocus = true;
+    categoryFocus = false;
+    descriptionFocus = false;
   }
 
   onTapOutside() {
-    titleFocus.value = false;
-    categoryFocus.value = false;
-    descriptionFocus.value = false;
+    titleFocus = false;
+    categoryFocus = false;
+    descriptionFocus = false;
   }
 
   @override
@@ -72,8 +70,8 @@ class _TitlePeriorityState extends State<TitlePeriority> {
               height: 10,
             ),
             AddInputField(
-              controller: title.value,
-              focus: titleFocus.value,
+              controller: title,
+              focus: titleFocus,
               onTap: () => setTitleFocus(),
               onTapOutSide: () => onTapOutside(),
               hint: 'Enter task title',
@@ -98,19 +96,17 @@ class _TitlePeriorityState extends State<TitlePeriority> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Obx(
-                  () => PeriorityContainer(
-                      onTap: () => setPeriority(true),
-                      focus: lowPeriority.value,
-                      type: "Low"),
-                ),
+                PeriorityContainer(
+                    onTap: () => setPeriority(true),
+                    focus: lowPeriority,
+                    type: "Low"),
                 const SizedBox(
                   width: 5,
                 ),
-                Obx(() => PeriorityContainer(
+                PeriorityContainer(
                     onTap: () => setPeriority(false),
-                    focus: !lowPeriority.value,
-                    type: "High")),
+                    focus: !lowPeriority,
+                    type: "High"),
               ],
             ),
           ],

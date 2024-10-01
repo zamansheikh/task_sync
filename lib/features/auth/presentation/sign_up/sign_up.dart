@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
 import 'package:task_sync/core/utils/utils.dart';
 import 'package:task_sync/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:task_sync/features/auth/presentation/sign_up/components/appbar.dart';
@@ -18,32 +17,33 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  RxBool nameFocus = false.obs;
-  RxBool emailFocus = false.obs;
-  RxBool passwordFocus = false.obs;
-  RxBool correctEmail = false.obs;
-  RxBool correctName = false.obs;
-  RxBool showPassword = true.obs;
-  RxBool loading = false.obs;
+  bool nameFocus = false;
+  bool emailFocus = false;
+  bool passwordFocus = false;
+  bool correctEmail = false;
+  bool correctName = false;
+  bool showPassword = true;
+  bool loading = false;
   // final FirebaseServices firebase=FirebaseServices();
-  final email = TextEditingController().obs;
-  final name = TextEditingController().obs;
-  final password = TextEditingController().obs;
+  final email = TextEditingController();
+  final name = TextEditingController();
+  final password = TextEditingController();
   void validateEmail() {
-    correctEmail.value = Utils.validateEmail(email.value.text.toString());
+    correctEmail = Utils.validateEmail(email.text.toString());
   }
 
   void validateName() {
-    correctName.value = name.value.text.toString().length > 5;
+    correctName = name.text.toString().length > 5;
   }
 
   void setLoading(bool value) {
-    loading.value = value;
+    loading = value;
   }
 
   void createAccount() {
-    if (!correctName.value) {
+    if (!correctName) {
       Utils.showSnackBar(
+          context,
           'Warning',
           'Enter Correct Name',
           const Icon(
@@ -52,8 +52,9 @@ class _SignUpState extends State<SignUp> {
           ));
       return;
     }
-    if (!correctEmail.value) {
+    if (!correctEmail) {
       Utils.showSnackBar(
+          context,
           'Warning',
           'Enter Correct Email',
           const Icon(
@@ -62,8 +63,9 @@ class _SignUpState extends State<SignUp> {
           ));
       return;
     }
-    if (password.value.text.toString().length < 6) {
+    if (password.text.toString().length < 6) {
       Utils.showSnackBar(
+          context,
           'Warning',
           'Password length should greater than 5',
           const Icon(
@@ -73,32 +75,32 @@ class _SignUpState extends State<SignUp> {
       return;
     }
     sl<AuthRemoteDataSource>().signUpWithEmailAndPassword(
-        email.value.text.toString(), password.value.text.toString());
+        email.text.toString(), password.text.toString());
     // FirebaseService.createAccount();
   }
 
   void onFocusEmail() {
-    emailFocus.value = true;
-    nameFocus.value = false;
-    passwordFocus.value = false;
+    emailFocus = true;
+    nameFocus = false;
+    passwordFocus = false;
   }
 
   void onFocusName() {
-    emailFocus.value = false;
-    nameFocus.value = true;
-    passwordFocus.value = false;
+    emailFocus = false;
+    nameFocus = true;
+    passwordFocus = false;
   }
 
   void onFocusPassword() {
-    emailFocus.value = false;
-    nameFocus.value = false;
-    passwordFocus.value = true;
+    emailFocus = false;
+    nameFocus = false;
+    passwordFocus = true;
   }
 
   void onTapOutside(BuildContext context) {
-    emailFocus.value = false;
-    nameFocus.value = false;
-    passwordFocus.value = false;
+    emailFocus = false;
+    nameFocus = false;
+    passwordFocus = false;
     FocusScope.of(context).unfocus();
   }
 
@@ -129,14 +131,12 @@ class _SignUpState extends State<SignUp> {
                 ),
                 const SignUpOptions(),
                 // InputForm(),
-                Obx(
-                  () => AccountButton(
-                    text: "Create Account",
-                    loading: false,
-                    onTap: () {
-                      createAccount();
-                    },
-                  ),
+                AccountButton(
+                  text: "Create Account",
+                  loading: false,
+                  onTap: () {
+                    createAccount();
+                  },
                 ),
                 const SizedBox(
                   height: 40,
@@ -144,7 +144,9 @@ class _SignUpState extends State<SignUp> {
                 Align(
                     alignment: Alignment.center,
                     child: GestureDetector(
-                      onTap: () => Get.toNamed(Routes.signInScreen),
+                      onTap: () {
+                        Navigator.pushNamed(context, Routes.signInScreen);
+                      },
                       child: RichText(
                           text: const TextSpan(children: [
                         TextSpan(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import 'text_field.dart';
 
@@ -66,21 +65,21 @@ class _InputFormState extends State<InputForm> {
         const SizedBox(
           height: 10,
         ),
-        Obx(() => InputField(
-              onTap: () {
-                setState(() {
-                  emailFocus = true;
-                  passwordFocus = false;
-                });
-              },
-              focus: emailFocus,
-              hint: "tim@gmail.com",
-              passcontroller:widget.emailcontroller,
-              correct: correctEmail,
-              onChange: (){
-                correctEmail = GetUtils.isEmail(widget.emailcontroller.text);
-              },
-            )),
+        InputField(
+          onTap: () {
+            setState(() {
+              emailFocus = true;
+              passwordFocus = false;
+            });
+          },
+          focus: emailFocus,
+          hint: "tim@gmail.com",
+          passcontroller: widget.emailcontroller,
+          correct: correctEmail,
+          onChange: () {
+            correctEmail = isEmail(widget.emailcontroller.text);
+          },
+        ),
         const SizedBox(
           height: 20,
         ),
@@ -92,30 +91,32 @@ class _InputFormState extends State<InputForm> {
         const SizedBox(
           height: 10,
         ),
-        Obx(
-          () => InputField(
-            onTap: () {
-              setState(() {
-                emailFocus = false;
-                passwordFocus = true;
-              });
-            },
-            focus: passwordFocus,
-            hint: "Pick a strong password",
-            passcontroller: widget.passcontroller,
-            hideText: showPassword,
-            onChange: () {},
-            showPass: () {
-              setState(() {
-                showPassword = !showPassword;
-              });
-            },
-          ),
+        InputField(
+          onTap: () {
+            setState(() {
+              emailFocus = false;
+              passwordFocus = true;
+            });
+          },
+          focus: passwordFocus,
+          hint: "Pick a strong password",
+          passcontroller: widget.passcontroller,
+          hideText: showPassword,
+          onChange: () {},
+          showPass: () {
+            setState(() {
+              showPassword = !showPassword;
+            });
+          },
         ),
         const SizedBox(
           height: 40,
         ),
       ],
     );
+  }
+
+  bool isEmail(String text) {
+    return text.contains('@');
   }
 }

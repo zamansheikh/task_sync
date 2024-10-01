@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:task_sync/core/utils/utils.dart';
 
@@ -14,18 +13,18 @@ class DateTimeRow extends StatefulWidget {
 }
 
 class _DateTimeRowState extends State<DateTimeRow> {
-  RxInt selectedImageIndex = 1.obs;
-  RxBool lowPeriority = true.obs;
-  RxBool titleFocus = false.obs;
-  RxBool categoryFocus = false.obs;
-  RxBool descriptionFocus = false.obs;
-  RxBool loading = false.obs;
-  RxDouble progress = 0.0.obs;
-  Rx<TextEditingController> title = TextEditingController().obs;
-  Rx<TextEditingController> description = TextEditingController().obs;
-  Rx<TextEditingController> category = TextEditingController().obs;
-  RxString time = ''.obs;
-  RxString date = ''.obs;
+  int selectedImageIndex = 1;
+  bool lowPeriority = true;
+  bool titleFocus = false;
+  bool categoryFocus = false;
+  bool descriptionFocus = false;
+  bool loading = false;
+  double progress = 0.0;
+  TextEditingController title = TextEditingController();
+  TextEditingController description = TextEditingController();
+  TextEditingController category = TextEditingController();
+  String time = '';
+  String date = '';
 
   pickDate(BuildContext context) async {
     var pickedDate = await showDatePicker(
@@ -35,7 +34,7 @@ class _DateTimeRowState extends State<DateTimeRow> {
       lastDate: DateTime(2025),
     );
     if (pickedDate != null) {
-      date.value = Utils.formateDate(pickedDate);
+      date = Utils.formateDate(pickedDate);
     }
   }
 
@@ -44,7 +43,7 @@ class _DateTimeRowState extends State<DateTimeRow> {
         await showTimePicker(context: context, initialTime: TimeOfDay.now());
     if (pickedTime != null) {
       DateFormat dateFormat = DateFormat('hh:mm a');
-      time.value = dateFormat.format(DateTime(
+      time = dateFormat.format(DateTime(
         2323,
         1,
         1,
@@ -72,17 +71,17 @@ class _DateTimeRowState extends State<DateTimeRow> {
             const SizedBox(
               height: 10,
             ),
-            Obx(() => DateTimeContainer(
-                  text: date.value.isEmpty ? 'dd/mm/yyyy' : date.value,
-                  icon: const Icon(
-                    FontAwesomeIcons.calendar,
-                    color: Colors.white24,
-                    size: 20,
-                  ),
-                  onTap: () {
-                    pickDate(context);
-                  },
-                ))
+            DateTimeContainer(
+              text: date.isEmpty ? 'dd/mm/yyyy' : date,
+              icon: const Icon(
+                FontAwesomeIcons.calendar,
+                color: Colors.white24,
+                size: 20,
+              ),
+              onTap: () {
+                pickDate(context);
+              },
+            )
           ],
         ),
         Column(
@@ -105,17 +104,17 @@ class _DateTimeRowState extends State<DateTimeRow> {
             const SizedBox(
               height: 10,
             ),
-            Obx(() => DateTimeContainer(
-                  text: time.value.isEmpty ? 'hh/mm' : time.value,
-                  icon: const Icon(
-                    Icons.watch,
-                    color: Colors.white24,
-                    size: 20,
-                  ),
-                  onTap: () {
-                    picTime(context);
-                  },
-                ))
+            DateTimeContainer(
+              text: time.isEmpty ? 'hh/mm' : time,
+              icon: const Icon(
+                Icons.watch,
+                color: Colors.white24,
+                size: 20,
+              ),
+              onTap: () {
+                picTime(context);
+              },
+            )
           ],
         )
       ],
