@@ -4,6 +4,7 @@ import 'package:task_sync/core/utils/utils.dart';
 import 'package:task_sync/features/auth/data/datasources/auth_remote_data_source.dart';
 
 import 'package:task_sync/features/auth/presentation/pages/widgets/button.dart';
+import 'package:task_sync/features/auth/presentation/pages/widgets/signup_input_form.dart';
 import 'package:task_sync/features/auth/presentation/pages/widgets/spec/icon_container.dart';
 import 'package:task_sync/features/task/presentation/home_page/new_task/common%20_widgets/back_button.dart';
 import 'package:task_sync/injection_container.dart';
@@ -28,17 +29,6 @@ class _SignUpState extends State<SignUp> {
   final emailController = TextEditingController();
   final nameController = TextEditingController();
   final passwordController = TextEditingController();
-  void validateEmail() {
-    correctEmail = Utils.validateEmail(emailController.text.toString());
-  }
-
-  void validateName() {
-    correctName = nameController.text.toString().length > 5;
-  }
-
-  void setLoading(bool value) {
-    loading = value;
-  }
 
   void createAccount() {
     if (!correctName) {
@@ -79,31 +69,6 @@ class _SignUpState extends State<SignUp> {
     // FirebaseService.createAccount();
   }
 
-  void onFocusEmail() {
-    emailFocus = true;
-    nameFocus = false;
-    passwordFocus = false;
-  }
-
-  void onFocusName() {
-    emailFocus = false;
-    nameFocus = true;
-    passwordFocus = false;
-  }
-
-  void onFocusPassword() {
-    emailFocus = false;
-    nameFocus = false;
-    passwordFocus = true;
-  }
-
-  void onTapOutside(BuildContext context) {
-    emailFocus = false;
-    nameFocus = false;
-    passwordFocus = false;
-    FocusScope.of(context).unfocus();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,9 +83,13 @@ class _SignUpState extends State<SignUp> {
                 const SizedBox(
                   height: 30,
                 ),
-                const Row(
+                Row(
                   children: [
-                    CustomBackButton(),
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: CustomBackButton()),
                     SizedBox(
                       width: 20,
                     ),
@@ -163,7 +132,11 @@ class _SignUpState extends State<SignUp> {
                     )),
                   ],
                 ),
-                // InputForm(),
+                SignUpForm(
+                  nameController: nameController,
+                  emailController: emailController,
+                  passController: passwordController,
+                ),
                 AccountButton(
                   text: "Create Account",
                   loading: false,

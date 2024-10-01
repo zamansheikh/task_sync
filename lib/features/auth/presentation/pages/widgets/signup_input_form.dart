@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:task_sync/features/auth/presentation/pages/widgets/spec/animated_input_field.dart';
 
-class SignInForm extends StatefulWidget {
+class SignUpForm extends StatefulWidget {
   final TextEditingController emailController;
   final TextEditingController passController;
-  const SignInForm({
+  final TextEditingController nameController;
+  const SignUpForm({
     super.key,
     required this.emailController,
     required this.passController,
+    required this.nameController,
   });
 
   @override
-  State<SignInForm> createState() => _SignInFormState();
+  State<SignUpForm> createState() => _SignUpFormState();
 }
 
-class _SignInFormState extends State<SignInForm> {
+class _SignUpFormState extends State<SignUpForm> {
   bool correctEmail = false;
   void validateEmail() {
     setState(() {
@@ -23,6 +25,7 @@ class _SignInFormState extends State<SignInForm> {
     });
   }
 
+  final FocusNode _nameFocusNode = FocusNode();
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
   bool showPassword = true;
@@ -31,10 +34,16 @@ class _SignInFormState extends State<SignInForm> {
     return text.contains('@') && text.contains('.');
   }
 
+  bool isName(String text) {
+    return text.length > 3;
+  }
+
   @override
   void initState() {
     super.initState();
-
+    _nameFocusNode.addListener(() {
+      setState(() {});
+    });
     _emailFocusNode.addListener(() {
       setState(() {});
     });
@@ -45,6 +54,7 @@ class _SignInFormState extends State<SignInForm> {
 
   @override
   void dispose() {
+    _nameFocusNode.dispose();
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
     super.dispose();
@@ -56,6 +66,27 @@ class _SignInFormState extends State<SignInForm> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 40),
+        const Text(
+          'Name',
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.w400, fontSize: 17),
+        ),
+        const SizedBox(height: 10),
+        AnimatedInputField(
+          focusNode: _nameFocusNode,
+          controller: widget.nameController,
+          hint: "Zaman Sheikh",
+          correct: isName(widget.nameController.text),
+          onChange: () {
+            setState(() {}); // Trigger a rebuild
+          },
+          onTap: () {
+            _passwordFocusNode.unfocus();
+            _emailFocusNode.unfocus();
+            _nameFocusNode.requestFocus();
+          },
+        ),
+        const SizedBox(height: 20),
         const Text(
           'Email',
           style: TextStyle(
@@ -72,6 +103,7 @@ class _SignInFormState extends State<SignInForm> {
           },
           onTap: () {
             _passwordFocusNode.unfocus();
+            _nameFocusNode.unfocus();
             _emailFocusNode.requestFocus();
           },
         ),
@@ -92,6 +124,7 @@ class _SignInFormState extends State<SignInForm> {
           },
           onTap: () {
             _emailFocusNode.unfocus();
+            _nameFocusNode.unfocus();
             _passwordFocusNode.requestFocus();
           },
           showPass: () {
