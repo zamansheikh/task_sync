@@ -25,7 +25,13 @@ class _HomePageState extends State<HomePage> {
       create: (context) => sl<HomeCubit>(),
       child: BlocConsumer<HomeCubit, HomeState>(
         listener: (context, state) {
-          // TODO: implement listener
+          if (state.errorMessage.isNotEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.errorMessage),
+              ),
+            );
+          }
         },
         builder: (context, state) {
           return Scaffold(
@@ -117,25 +123,24 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: true
-                        ? RichText(
-                            text: TextSpan(children: [
-                            const TextSpan(
-                              text: 'Progress  ',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 16),
-                            ),
-                            TextSpan(
-                              text: '(100%) ',
-                              style: const TextStyle(
-                                  color: Colors.white70,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16),
-                            ),
-                          ]))
-                        : const SizedBox(),
+                    child: RichText(
+                      text: TextSpan(children: [
+                        const TextSpan(
+                          text: 'Progress  ',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 16),
+                        ),
+                        TextSpan(
+                          text: '(100%) ',
+                          style: const TextStyle(
+                              color: Colors.white70,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 16),
+                        ),
+                      ]),
+                    ),
                   ),
                   const SizedBox(
                     height: 15,
@@ -146,15 +151,13 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: true
-                        ? const Text(
-                            'Tasks',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w800,
-                                fontSize: 16),
-                          )
-                        : const SizedBox(),
+                    child: Text(
+                      'Tasks',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 16),
+                    ),
                   ),
                   const SizedBox(
                     height: 30,
@@ -163,64 +166,60 @@ class _HomePageState extends State<HomePage> {
                     child: ListView.builder(
                       itemCount: 10,
                       itemBuilder: (context, index) {
-                        if (true) {
-                          return Column(
-                            children: [
-                              Container(
-                                height: 70,
-                                width: double.infinity,
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 30),
-                                decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      height: 20,
-                                      width: 20,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.pinkAccent,
-                                          border:
-                                              Border.all(color: Colors.white)),
-                                      child: const Icon(
-                                        Icons.done,
+                        return Column(
+                          children: [
+                            Container(
+                              height: 70,
+                              width: double.infinity,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 30),
+                              decoration: BoxDecoration(
+                                color: primaryColor,
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    alignment: Alignment.center,
+                                    height: 20,
+                                    width: 20,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.pinkAccent,
+                                        border:
+                                            Border.all(color: Colors.white)),
+                                    child: const Icon(
+                                      Icons.done,
+                                      color: Colors.white,
+                                      size: 15,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    'Create a new task',
+                                    style: const TextStyle(
                                         color: Colors.white,
-                                        size: 15,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 20,
-                                    ),
-                                    Text(
-                                      'Create a new task',
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                    const Spacer(),
-                                    const CircleAvatar(
-                                      radius: 5,
-                                      backgroundColor: Colors.purpleAccent,
-                                    )
-                                  ],
-                                ),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  const Spacer(),
+                                  const CircleAvatar(
+                                    radius: 5,
+                                    backgroundColor: Colors.purpleAccent,
+                                  )
+                                ],
                               ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                            ],
-                          );
-                        } else {
-                          return const SizedBox();
-                        }
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                          ],
+                        );
                       },
                     ),
                   )
