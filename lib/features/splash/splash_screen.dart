@@ -18,9 +18,17 @@ class _SplashScreenState extends State<SplashScreen> {
     return BlocListener<SplashCubit, SplashState>(
       listener: (context, state) {
         if (state is SplashLoggedIn) {
-          Navigator.pushNamed(context, Routes.homePage);
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            Routes.homePage,
+            (Route<dynamic> route) => false,
+          );
         } else {
-          Navigator.pushNamed(context, Routes.signInScreen);
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            Routes.signInScreen,
+            (Route<dynamic> route) => false,
+          );
         }
       },
       child: Scaffold(
