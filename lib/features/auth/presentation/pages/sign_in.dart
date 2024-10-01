@@ -83,6 +83,8 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
+    final nameController = TextEditingController();
+    final passController = TextEditingController();
     return Scaffold(
       backgroundColor: black,
       body: SafeArea(
@@ -141,9 +143,6 @@ class _SignInState extends State<SignIn> {
                   ],
                 ),
                 SignInForm(
-                  emailController: email, onFocusName: () {  }, correctName: , nameFocus: , validateName: () {  }, passController: , nameController: ,
-                  
-              
                 ),
                 AccountButton(
                   text: "Login Account",

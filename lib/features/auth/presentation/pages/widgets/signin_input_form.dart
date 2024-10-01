@@ -4,22 +4,8 @@ import 'package:task_sync/core/constants/app_color.dart';
 import 'package:task_sync/features/auth/presentation/pages/widgets/textfield_sufiix.dart';
 
 class SignInForm extends StatefulWidget {
-  final Function() onFocusName;
-  final Function() validateName;
-  final bool correctName;
-  final bool nameFocus;
-  final TextEditingController passController;
-  final TextEditingController emailController;
-  final TextEditingController nameController;
   const SignInForm({
     super.key,
-    required this.onFocusName,
-    required this.correctName,
-    required this.nameFocus,
-    required this.validateName,
-    required this.passController,
-    required this.emailController,
-    required this.nameController,
   });
 
   @override
@@ -27,12 +13,11 @@ class SignInForm extends StatefulWidget {
 }
 
 class _SignInFormState extends State<SignInForm> {
+  final TextEditingController passController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  bool correctEmail = false; // Adjust based on your validation logic
-  bool nameFocus = false; // Add focus management logic if necessary
 
-  // Simulated method for validating email (you can replace this with your logic)
+  bool correctEmail = false;
+  bool nameFocus = false;
   void validateEmail() {
     setState(() {
       correctEmail =
@@ -74,24 +59,6 @@ class _SignInFormState extends State<SignInForm> {
       children: [
         const SizedBox(height: 40),
         const Text(
-          'Name',
-          style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.w400, fontSize: 17),
-        ),
-        const SizedBox(height: 10),
-        _buildInputField(
-          focusNode: _nameFocusNode,
-          controller: widget.nameController,
-          hint: "Enter Your Name",
-          correct: widget.correctName,
-          onChange: widget.validateName,
-          onTap: () {
-            widget.onFocusName();
-            _nameFocusNode.requestFocus();
-          },
-        ),
-        const SizedBox(height: 20),
-        const Text(
           'Email',
           style: TextStyle(
               color: Colors.white, fontWeight: FontWeight.w400, fontSize: 17),
@@ -99,9 +66,9 @@ class _SignInFormState extends State<SignInForm> {
         const SizedBox(height: 10),
         _buildInputField(
           focusNode: _emailFocusNode,
-          controller: widget.emailController,
+          controller: emailController,
           hint: "zaman@gmail.com",
-          correct: isEmail(widget.emailController.text),
+          correct: isEmail(emailController.text),
           onChange: () {
             setState(() {}); // Trigger a rebuild
           },
@@ -119,7 +86,7 @@ class _SignInFormState extends State<SignInForm> {
         const SizedBox(height: 10),
         _buildInputField(
           focusNode: _passwordFocusNode,
-          controller: widget.passController,
+          controller: passController,
           hint: "Pick a strong password",
           hideText: showPassword,
           onChange: () {},
