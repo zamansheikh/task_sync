@@ -5,7 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:task_sync/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:task_sync/features/auth/presentation/bloc/auth_event.dart';
 import 'package:task_sync/features/splash/cubit/splash_cubit.dart';
+import 'package:task_sync/injection_container.dart' as di;
 import 'package:task_sync/routes/routes.dart';
 
 import '../routes/app_routes.dart';
@@ -19,6 +22,8 @@ void main() async {
         : await getTemporaryDirectory(),
   );
   await Firebase.initializeApp();
+
+  await di.init();
   runApp(const MyApp());
 }
 
@@ -28,7 +33,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => SplashCubit()..checkUser()),
+        BlocProvider(create: (context) => di.sl<SplashCubit>()..checkUser()),
+        BlocProvider(
+          create: (context) => di.sl<AuthBloc>()..add(CheckAuthEvent()),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
