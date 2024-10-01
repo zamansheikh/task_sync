@@ -3,13 +3,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:task_sync/core/utils/utils.dart';
 import 'package:task_sync/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:task_sync/features/auth/presentation/pages/widgets/button.dart';
-import 'package:task_sync/features/auth/presentation/pages/widgets/signup_options.dart';
+import 'package:task_sync/features/auth/presentation/pages/widgets/spec/icon_container.dart';
+import 'package:task_sync/features/task/presentation/home_page/new_task/common%20_widgets/back_button.dart';
 import 'package:task_sync/injection_container.dart';
 
 import '../../../../core/constants/app_color.dart';
 
 import '../../../../../routes/routes.dart';
-import 'package:task_sync/features/auth/presentation/pages/widgets/signin_bar.dart';
 import 'package:task_sync/features/auth/presentation/pages/widgets/signin_input_form.dart';
 
 class SignIn extends StatefulWidget {
@@ -53,7 +53,7 @@ class _SignInState extends State<SignIn> {
     }
 
     sl<AuthRemoteDataSource>().loginWithEmailAndPassword(
-        email.value.text.toString(), password.value.text.toString());
+        email.text.toString(), password.text.toString());
     // FirebaseService.loginAccount();
   }
 
@@ -95,7 +95,21 @@ class _SignInState extends State<SignIn> {
                 const SizedBox(
                   height: 30,
                 ),
-                const SignInBar(),
+                const Row(
+                  children: [
+                    CustomBackButton(),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text(
+                      'Sign in',
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    )
+                  ],
+                ),
                 const SizedBox(
                   height: 50,
                 ),
@@ -106,8 +120,31 @@ class _SignInState extends State<SignIn> {
                 const SizedBox(
                   height: 20,
                 ),
-                const SignUpOptions(),
-                SignInForm(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () =>
+                          sl<AuthRemoteDataSource>().signUpWithGoogle(),
+                      child: const IconContainer(
+                          widget: Icon(
+                        FontAwesomeIcons.google,
+                        size: 18,
+                        color: Colors.white,
+                      )),
+                    ),
+                    const IconContainer(
+                        widget: Icon(
+                      Icons.apple_rounded,
+                      color: Colors.white,
+                    )),
+                  ],
+                ),
+                SignInForm(
+                  emailController: email, onFocusName: () {  }, correctName: , nameFocus: , validateName: () {  }, passController: , nameController: ,
+                  
+              
+                ),
                 AccountButton(
                   text: "Login Account",
                   loading: loading,

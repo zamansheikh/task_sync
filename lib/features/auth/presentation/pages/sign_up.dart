@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:task_sync/core/utils/utils.dart';
 import 'package:task_sync/features/auth/data/datasources/auth_remote_data_source.dart';
-import 'package:task_sync/features/auth/presentation/pages/widgets/appbar.dart';
+
 import 'package:task_sync/features/auth/presentation/pages/widgets/button.dart';
-import 'package:task_sync/features/auth/presentation/pages/widgets/signup_options.dart';
+import 'package:task_sync/features/auth/presentation/pages/widgets/spec/icon_container.dart';
+import 'package:task_sync/features/task/presentation/home_page/new_task/common%20_widgets/back_button.dart';
 import 'package:task_sync/injection_container.dart';
 import 'package:task_sync/routes/routes.dart';
 
@@ -24,16 +25,15 @@ class _SignUpState extends State<SignUp> {
   bool correctName = false;
   bool showPassword = true;
   bool loading = false;
-  // final FirebaseServices firebase=FirebaseServices();
-  final email = TextEditingController();
-  final name = TextEditingController();
-  final password = TextEditingController();
+  final emailController = TextEditingController();
+  final nameController = TextEditingController();
+  final passwordController = TextEditingController();
   void validateEmail() {
-    correctEmail = Utils.validateEmail(email.text.toString());
+    correctEmail = Utils.validateEmail(emailController.text.toString());
   }
 
   void validateName() {
-    correctName = name.text.toString().length > 5;
+    correctName = nameController.text.toString().length > 5;
   }
 
   void setLoading(bool value) {
@@ -63,7 +63,7 @@ class _SignUpState extends State<SignUp> {
           ));
       return;
     }
-    if (password.text.toString().length < 6) {
+    if (passwordController.text.toString().length < 6) {
       Utils.showSnackBar(
           context,
           'Warning',
@@ -75,7 +75,7 @@ class _SignUpState extends State<SignUp> {
       return;
     }
     sl<AuthRemoteDataSource>().signUpWithEmailAndPassword(
-        email.text.toString(), password.text.toString());
+        emailController.text.toString(), passwordController.text.toString());
     // FirebaseService.createAccount();
   }
 
@@ -118,7 +118,21 @@ class _SignUpState extends State<SignUp> {
                 const SizedBox(
                   height: 30,
                 ),
-                const SignUpBar(),
+                const Row(
+                  children: [
+                    CustomBackButton(),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text(
+                      'Sign up',
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    )
+                  ],
+                ),
                 const SizedBox(
                   height: 50,
                 ),
@@ -129,7 +143,26 @@ class _SignUpState extends State<SignUp> {
                 const SizedBox(
                   height: 20,
                 ),
-                const SignUpOptions(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () =>
+                          sl<AuthRemoteDataSource>().signUpWithGoogle(),
+                      child: const IconContainer(
+                          widget: Icon(
+                        FontAwesomeIcons.google,
+                        size: 18,
+                        color: Colors.white,
+                      )),
+                    ),
+                    const IconContainer(
+                        widget: Icon(
+                      Icons.apple_rounded,
+                      color: Colors.white,
+                    )),
+                  ],
+                ),
                 // InputForm(),
                 AccountButton(
                   text: "Create Account",
