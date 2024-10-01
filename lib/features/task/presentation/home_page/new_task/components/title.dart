@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:task_sync/features/task/presentation/new_task/components/add_fild.dart';
-import 'package:task_sync/features/task/presentation/new_task/components/periority_container.dart';
+import 'package:task_sync/features/task/presentation/home_page/new_task/components/add_fild.dart';
+import 'package:task_sync/features/task/presentation/home_page/new_task/components/periority_container.dart';
 
 class TitlePeriority extends StatefulWidget {
   const TitlePeriority({super.key});

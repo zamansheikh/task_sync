@@ -1,7 +1,7 @@
 // ignore_for_file: overridden_fields
 
 import 'package:hive/hive.dart';
-import 'package:task_sync/features/task/domain/task.dart';
+import 'package:task_sync/features/task/domain/entities/task.dart';
 
 part 'task_model.g.dart'; // This is for the generated adapter
 

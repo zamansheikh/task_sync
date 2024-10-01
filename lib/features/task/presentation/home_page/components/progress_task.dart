@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_sync/features/task/presentation/components/progress_container.dart';
+import 'package:task_sync/features/task/presentation/home_page/components/progress_container.dart';
 
 class ProgressTask extends StatefulWidget {
   const ProgressTask({super.key});

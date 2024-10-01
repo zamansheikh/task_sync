@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-import '../../../../core/constants/app_color.dart';
-import '../../../../core/utils/utils.dart';
+import '../../../../../core/constants/app_color.dart';
+import '../../../../../core/utils/utils.dart';
 import '../new_task/common _widgets/back_button.dart';
 
 class ProgressContainer extends StatefulWidget {

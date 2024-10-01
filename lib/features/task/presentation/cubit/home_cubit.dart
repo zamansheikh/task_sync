@@ -5,7 +5,7 @@ import 'package:task_sync/features/auth/bloc/auth_state.dart';
 import 'package:task_sync/features/auth/data/models/user_model.dart';
 import 'package:task_sync/features/task/data/models/task_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:task_sync/features/task/bloc/task_bloc.dart';
+import 'package:task_sync/features/task/presentation/bloc/task_bloc.dart';
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
@@ -33,9 +33,5 @@ class HomeCubit extends Cubit<HomeState> {
   void loadInitialData() {
     emit(state.copyWith(isLoading: true));
     // Optionally, initiate loading data here if necessary.
-  }
-
-  void refreshTasks() {
-    taskBloc.add(LoadTasksEvent());
   }
 }

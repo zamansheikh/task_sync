@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:task_sync/features/task/cubit/home_cubit.dart';
-import 'package:task_sync/features/task/presentation/new_task/components/addtask_body.dart';
+import 'package:task_sync/features/task/presentation/cubit/home_cubit.dart';
+import 'package:task_sync/features/task/presentation/home_page/new_task/components/addtask_body.dart';
 import 'package:task_sync/injection_container.dart';
 import '../../../../core/constants/app_color.dart';
 import '../../../../core/constants/app_icons.dart';
 import '../../../../core/utils/utils.dart';
-import '../new_task/common _widgets/back_button.dart';
-import '../components/progress_task.dart';
-import '../components/search_field.dart';
+import 'new_task/common _widgets/back_button.dart';
+import 'components/progress_task.dart';
+import 'components/search_field.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

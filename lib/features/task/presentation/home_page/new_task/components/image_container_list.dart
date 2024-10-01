@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/constants/app_images.dart';
+import '../../../../../../core/constants/app_images.dart';
 import 'image_container.dart';
 
 class ImageContainerList extends StatefulWidget {

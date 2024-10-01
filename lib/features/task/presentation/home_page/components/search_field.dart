@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../../../core/constants/app_color.dart';
-import '../../../../core/constants/app_icons.dart';
-import '../../../auth/presentation/sign_up/components/textfield_sufiix.dart';
+import '../../../../../core/constants/app_color.dart';
+import '../../../../../core/constants/app_icons.dart';
+import '../../../../auth/presentation/sign_up/components/textfield_sufiix.dart';
 
 class SearchField extends StatefulWidget {
   const SearchField({super.key});

@@ -1,51 +1,62 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:task_sync/features/auth/data/datasources/auth_remote_data_source.dart';
+import 'package:dartz/dartz.dart';
+import 'package:task_sync/core/errors/failures.dart';
+import 'package:task_sync/features/auth/domain/usecases/check_auth_status_use_case.dart';
+import 'package:task_sync/features/auth/domain/usecases/login_use_case.dart';
+import 'package:task_sync/features/auth/domain/usecases/logout_use_case.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 import 'package:task_sync/features/auth/data/models/user_model.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthRemoteDataSource authRepository;
+  final CheckAuthStatusUseCase checkAuthStatusUseCase;
+  final LoginUseCase loginUseCase;
+  final LogoutUseCase logoutUseCase;
 
-  AuthBloc(this.authRepository) : super(AuthInitial()) {
+  AuthBloc({
+    required this.checkAuthStatusUseCase,
+    required this.loginUseCase,
+    required this.logoutUseCase,
+  }) : super(AuthInitial()) {
+    // Check if user is authenticated
     on<CheckAuthEvent>((event, emit) async {
       emit(AuthLoading());
-      try {
-        final isLoggedIn = await authRepository.isLoggedIn();
-        if (isLoggedIn) {
-          final UserModel? user = await authRepository.getCurrentUser();
+      final Either<Failure, UserModel?> authStatus =
+          await checkAuthStatusUseCase();
+
+      authStatus.fold(
+        (failure) => emit(AuthError('Error checking authentication status.')),
+        (user) {
           if (user != null) {
             emit(AuthenticatedState(user));
           } else {
             emit(UnauthenticatedState());
           }
-        } else {
-          emit(UnauthenticatedState());
-        }
-      } catch (e) {
-        emit(AuthError('Error checking authentication status.'));
-      }
+        },
+      );
     });
 
+    // Handle user login
     on<LoginEvent>((event, emit) async {
       emit(AuthLoading());
-      try {
-        final user = await authRepository.loginWithEmailAndPassword(
-            event.email, event.password);
-        emit(AuthenticatedState(user));
-      } catch (e) {
-        emit(AuthError('Login failed. Please try again.'));
-      }
+      final Either<Failure, UserModel> loginResult =
+          await loginUseCase(event.email, event.password);
+
+      loginResult.fold(
+        (failure) => emit(AuthError('Login failed. Please try again.')),
+        (user) => emit(AuthenticatedState(user)),
+      );
     });
 
+    // Handle user logout
     on<LogoutEvent>((event, emit) async {
       emit(AuthLoading());
-      try {
-        await authRepository.logout();
-        emit(UnauthenticatedState());
-      } catch (e) {
-        emit(AuthError('Logout failed. Please try again.'));
-      }
+      final Either<Failure, void> logoutResult = await logoutUseCase();
+
+      logoutResult.fold(
+        (failure) => emit(AuthError('Logout failed. Please try again.')),
+        (_) => emit(UnauthenticatedState()),
+      );
     });
   }
 }

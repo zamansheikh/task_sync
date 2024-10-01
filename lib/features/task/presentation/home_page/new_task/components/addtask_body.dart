@@ -4,11 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:task_sync/core/utils/utils.dart';
 import 'package:task_sync/features/task/data/datasources/db_helper.dart';
 import 'package:task_sync/features/task/data/models/task_model.dart';
-import 'package:task_sync/features/task/presentation/new_task/components/progress_picker.dart';
-import 'package:task_sync/features/task/presentation/new_task/components/title.dart';
-import 'package:task_sync/features/task/presentation/new_task/components/upper_body.dart';
+import 'package:task_sync/features/task/presentation/home_page/new_task/components/progress_picker.dart';
+import 'package:task_sync/features/task/presentation/home_page/new_task/components/title.dart';
+import 'package:task_sync/features/task/presentation/home_page/new_task/components/upper_body.dart';
 
-import '../../../../auth/presentation/sign_up/components/button.dart';
+import '../../../../../auth/presentation/sign_up/components/button.dart';
 import 'add_fild.dart';
 import 'datetime_row.dart';
 import 'image_container_list.dart';
