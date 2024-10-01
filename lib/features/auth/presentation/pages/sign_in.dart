@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:task_sync/core/utils/utils.dart';
 import 'package:task_sync/features/auth/data/datasources/auth_remote_data_source.dart';
-import 'package:task_sync/features/auth/presentation/sign_up/components/button.dart';
-import 'package:task_sync/features/auth/presentation/sign_up/components/signup_options.dart';
+import 'package:task_sync/features/auth/presentation/pages/components/button.dart';
+import 'package:task_sync/features/auth/presentation/pages/components/signup_options.dart';
 import 'package:task_sync/injection_container.dart';
 
 import '../../../../core/constants/app_color.dart';
 
 import '../../../../../routes/routes.dart';
-import 'package:task_sync/features/auth/presentation/sign_in/components/signin_bar.dart';
-import 'package:task_sync/features/auth/presentation/sign_in/components/signin_input_form.dart';
+import 'package:task_sync/features/auth/presentation/pages/components/signin_bar.dart';
+import 'package:task_sync/features/auth/presentation/pages/components/signin_input_form.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});

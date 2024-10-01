@@ -7,7 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_sync/core/platform/network_info.dart';
-import 'package:task_sync/features/auth/bloc/auth_bloc.dart';
+import 'package:task_sync/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:task_sync/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:task_sync/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:task_sync/features/auth/domain/repositories/auth_repository.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:task_sync/features/auth/presentation/sign_up/components/textfield_sufiix.dart';
+import 'package:task_sync/features/auth/presentation/pages/components/textfield_sufiix.dart';
 
 import '../../../../../core/constants/app_color.dart';
 

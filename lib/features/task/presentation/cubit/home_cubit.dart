@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:task_sync/features/auth/bloc/auth_bloc.dart';
-import 'package:task_sync/features/auth/bloc/auth_state.dart';
+import 'package:task_sync/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:task_sync/features/auth/presentation/bloc/auth_state.dart';
 import 'package:task_sync/features/auth/data/models/user_model.dart';
 import 'package:task_sync/features/task/data/models/task_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
