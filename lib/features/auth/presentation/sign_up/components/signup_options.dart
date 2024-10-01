@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:task_sync/features/auth/data/auth_remote_data_source.dart';
+import 'package:task_sync/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:task_sync/injection_container.dart';
 
 import 'icon_container.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:task_sync/core/utils/utils.dart';
-import 'package:task_sync/features/auth/data/auth_remote_data_source.dart';
+import 'package:task_sync/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:task_sync/features/auth/presentation/sign_up/components/appbar.dart';
 import 'package:task_sync/features/auth/presentation/sign_up/components/button.dart';
 import 'package:task_sync/features/auth/presentation/sign_up/components/signup_options.dart';

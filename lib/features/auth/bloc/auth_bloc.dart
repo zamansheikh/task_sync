@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:task_sync/features/auth/data/auth_remote_data_source.dart';
+import 'package:task_sync/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
-import 'package:task_sync/features/auth/data/user_model.dart';
+import 'package:task_sync/features/auth/data/models/user_model.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRemoteDataSource authRepository;

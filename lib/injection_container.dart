@@ -9,10 +9,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:task_sync/core/platform/network_info.dart';
 import 'package:task_sync/features/auth/bloc/auth_bloc.dart';
-import 'package:task_sync/features/auth/data/auth_remote_data_source.dart';
+import 'package:task_sync/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:task_sync/features/task/bloc/task_bloc.dart';
 import 'package:task_sync/features/task/cubit/home_cubit.dart';
-import 'package:task_sync/features/task/data/task_remote_data_source.dart';
+import 'package:task_sync/features/task/data/datasources/task_remote_data_source.dart';
 
 final sl = GetIt.instance;
 
@@ -33,13 +33,6 @@ Future<void> init() async {
   //Network Info
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
   //! Student Issues
-  // Use cases
-  // sl.registerLazySingleton(() => GetStudentIssues(sl()));
-  // sl.registerLazySingleton(() => PostStudentIssue(sl()));
-  // sl.registerLazySingleton(() => ResolveStudentIssue(sl()));
-
-  // Repository
-  // sl.registerLazySingleton<StudentIssueRepository>( () => StudentIssueRepositoryImpl());
 
   //! External
   final SharedPreferences prefs = await SharedPreferences.getInstance();

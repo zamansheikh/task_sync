@@ -1,8 +1,8 @@
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:task_sync/features/task/data/task_model.dart';
-import 'package:task_sync/features/task/data/task_remote_data_source.dart';
+import 'package:task_sync/features/task/data/models/task_model.dart';
+import 'package:task_sync/features/task/data/datasources/task_remote_data_source.dart';
 import 'package:task_sync/injection_container.dart';
 
 class DbHelper {

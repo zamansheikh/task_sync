@@ -6,3 +6,5 @@ class ServerException implements Exception {
   @override
   String toString() => message;
 }
+
+class CacheException implements Exception {}

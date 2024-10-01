@@ -3,8 +3,8 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:task_sync/core/platform/network_info.dart';
-import 'package:task_sync/features/task/data/db_helper.dart';
-import 'package:task_sync/features/task/data/task_model.dart';
+import 'package:task_sync/features/task/data/datasources/db_helper.dart';
+import 'package:task_sync/features/task/data/models/task_model.dart';
 
 part 'task_event.dart';
 part 'task_state.dart';

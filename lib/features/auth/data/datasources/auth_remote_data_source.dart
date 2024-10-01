@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:task_sync/core/error/exception/server_exception.dart';
-import 'package:task_sync/features/auth/data/user_model.dart';
+import 'package:task_sync/core/errors/exceptions.dart';
+import 'package:task_sync/features/auth/data/models/user_model.dart';
 
 abstract class AuthRemoteDataSource {
   /// Sign up with email and password.

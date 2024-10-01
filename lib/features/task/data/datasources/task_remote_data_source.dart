@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:task_sync/core/error/exception/server_exception.dart';
-import 'package:task_sync/features/task/data/task_model.dart';
+import 'package:task_sync/core/errors/exceptions.dart';
+import 'package:task_sync/features/task/data/models/task_model.dart';
 
 abstract class TaskRemoteDataSource {
   /// Calls the firebase endpoint.

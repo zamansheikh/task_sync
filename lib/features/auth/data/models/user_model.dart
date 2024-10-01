@@ -1,4 +1,4 @@
-import 'package:task_sync/features/auth/domain/user.dart';
+import 'package:task_sync/features/auth/domain/entities/user.dart';
 
 class UserModel extends User {
   const UserModel({
