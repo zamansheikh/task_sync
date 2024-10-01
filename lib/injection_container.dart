@@ -16,7 +16,7 @@ import 'package:task_sync/features/auth/domain/usecases/login_use_case.dart';
 import 'package:task_sync/features/auth/domain/usecases/logout_use_case.dart';
 import 'package:task_sync/features/task/data/repositories/task_repository_impl.dart';
 import 'package:task_sync/features/task/domain/repositories/task_repository.dart';
-import 'package:task_sync/features/task/domain/usecases/get_all_task_usecase.dart';
+import 'package:task_sync/features/task/domain/usecases/get_all_tasks_usecase.dart';
 import 'package:task_sync/features/task/domain/usecases/insert_task_usecase.dart';
 import 'package:task_sync/features/task/domain/usecases/update_task_usecase.dart';
 import 'package:task_sync/features/task/presentation/bloc/task_bloc.dart';
