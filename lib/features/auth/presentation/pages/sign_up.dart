@@ -26,6 +26,7 @@ class _SignUpState extends State<SignUp> {
   final emailController = TextEditingController();
   final nameController = TextEditingController();
   final passwordController = TextEditingController();
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +35,32 @@ class _SignUpState extends State<SignUp> {
         if (state is AuthError) {
           Utils.showSnackBar(
               context,
-              state.message,
+              "An error occurred",
               state.message,
               const Icon(
                 FontAwesomeIcons.triangleExclamation,
                 color: Colors.red,
               ));
+        }
+        if (state is AuthLoading) {
+          setState(() {
+            loading = true;
+          });
+        } else {
+          setState(() {
+            loading = false;
+          });
+        }
+        if (state is AuthenticatedState) {
+          Utils.showSnackBar(
+              context,
+              "Success",
+              "You have successfully logged in",
+              const Icon(
+                FontAwesomeIcons.triangleExclamation,
+                color: Colors.red,
+              ));
+          Navigator.pushNamed(context, Routes.homePage);
         }
       },
       child: Scaffold(
@@ -110,7 +131,7 @@ class _SignUpState extends State<SignUp> {
                   ),
                   AccountButton(
                     text: "Create Account",
-                    loading: false,
+                    loading: loading,
                     onTap: () {
                       BlocProvider.of<AuthBloc>(context).add(
                         SignUpEvent(

@@ -35,7 +35,7 @@ class _SignInState extends State<SignIn> {
         if (state is AuthError) {
           Utils.showSnackBar(
               context,
-              state.message,
+              "An error occurred",
               state.message,
               const Icon(
                 FontAwesomeIcons.triangleExclamation,
@@ -50,6 +50,17 @@ class _SignInState extends State<SignIn> {
           setState(() {
             loading = false;
           });
+        }
+        if (state is AuthenticatedState) {
+          Utils.showSnackBar(
+              context,
+              "Success",
+              "You have successfully logged in",
+              const Icon(
+                FontAwesomeIcons.triangleExclamation,
+                color: Colors.red,
+              ));
+          Navigator.pushNamed(context, Routes.homePage);
         }
       },
       child: Scaffold(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:task_sync/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:task_sync/features/auth/presentation/bloc/auth_state.dart';
 import 'package:task_sync/features/task/presentation/cubit/home_cubit.dart';
 import 'package:task_sync/features/task/presentation/home_page/new_task/components/addtask_body.dart';
 import 'package:task_sync/injection_container.dart';
@@ -19,6 +21,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    final homeCubit = context.read<HomeCubit>();
+    // Listen to the AuthBloc and retrieve the uid once the user is authenticated
+    final authState = context.read<AuthBloc>().state;
+    if (authState is AuthenticatedState) {
+      homeCubit.loadInitialData(authState.user.uid); // Pass the user's uid
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

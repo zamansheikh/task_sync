@@ -23,15 +23,15 @@ class HomeCubit extends Cubit<HomeState> {
 
     taskBloc.stream.listen((taskState) {
       if (taskState is TaskLoadedState) {
-        emit(state.copyWith(tasks: taskState.tasks));
+        emit(state.copyWith(tasks: taskState.tasks, isLoading: false));
       } else if (taskState is TaskErrorState) {
-        emit(state.copyWith(errorMessage: taskState.message));
+        emit(state.copyWith(errorMessage: taskState.message, isLoading: false));
       }
     });
   }
 
-  void loadInitialData() {
+  void loadInitialData(String uid) {
     emit(state.copyWith(isLoading: true));
-    // Optionally, initiate loading data here if necessary.
+    taskBloc.add(LoadTasksEvent(uid));
   }
 }
