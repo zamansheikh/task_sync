@@ -25,6 +25,20 @@ class UserModel extends User {
     };
   }
 
+  UserModel copyWith({
+    String? uid,
+    String? email,
+    String? displayName,
+    String? photoURL,
+  }) {
+    return UserModel(
+      uid: uid ?? this.uid,
+      email: email ?? this.email,
+      displayName: displayName ?? this.displayName,
+      photoURL: photoURL ?? this.photoURL,
+    );
+  }
+
   @override
   List<Object?> get props => [uid, email, displayName, photoURL];
 }

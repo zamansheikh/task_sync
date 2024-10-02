@@ -1,28 +1,34 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:task_sync/features/auth/domain/usecases/check_auth_status_use_case.dart';
+import 'package:task_sync/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:task_sync/features/auth/presentation/bloc/auth_state.dart';
 
 part 'splash_state.dart';
 
 class SplashCubit extends Cubit<SplashState> {
-  final CheckAuthStatusUseCase checkAuthUseCase; // Inject the use case
+  final AuthBloc authBloc;
 
-  SplashCubit(this.checkAuthUseCase) : super(SplashLoading());
+  SplashCubit(this.authBloc) : super(SplashLoading());
 
-  Future<void> checkUser() async {
+  void checkUser() async {
     emit(SplashLoading());
-    final result = await checkAuthUseCase();
-    result.fold(
-      (failure) {
-        emit(SplashError());
-      },
-      (user) {
-        if (user != null) {
-          emit(SplashLoggedIn(user.uid));
-        } else {
-          emit(SplashLoggedOut());
-        }
-      },
-    );
+    // Listen for changes in the AuthBloc's state
+    while (authBloc.state is AuthInitial || authBloc.state is AuthLoading) {
+      await Future.delayed(const Duration(milliseconds: 200), () {
+        print("Waiting for AuthBloc to finish...");
+      });
+    }
+    final authState = authBloc.state;
+    print("authState is now: $authState");
+    if (authState is AuthenticatedState) {
+      emit(SplashLoggedIn(authState.user.uid));
+    } else if (authState is UnauthenticatedState) {
+      emit(SplashLoggedOut());
+    } else if (authState is AuthError) {
+      emit(SplashError());
+    } else {
+      // Keep showing loading if AuthBloc is still working (AuthLoading state)
+      emit(SplashLoading());
+    }
   }
 }

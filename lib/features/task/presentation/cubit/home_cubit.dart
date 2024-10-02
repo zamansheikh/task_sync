@@ -32,6 +32,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   void loadInitialData(String uid) {
     emit(state.copyWith(isLoading: true));
+    
     taskBloc.add(LoadTasksEvent(uid));
   }
 }

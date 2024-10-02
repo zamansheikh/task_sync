@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_sync/core/constants/app_images.dart';
+import 'package:task_sync/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:task_sync/features/auth/presentation/bloc/auth_event.dart';
 import '../../../routes/routes.dart';
 import 'package:task_sync/features/splash/cubit/splash_cubit.dart';
 
@@ -13,6 +15,14 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    context.read<AuthBloc>().add(CheckAuthEvent());
+    
+    context.read<SplashCubit>().checkUser();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<SplashCubit, SplashState>(

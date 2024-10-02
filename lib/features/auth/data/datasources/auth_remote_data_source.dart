@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:task_sync/core/errors/exceptions.dart';
@@ -118,8 +119,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<UserModel?> getCurrentUser() async {
     final user = firebaseAuth.currentUser;
+
     if (user != null) {
-      return _mapFirebaseUserToUserModel(user);
+      final userModel = _mapFirebaseUserToUserModel(user);
+      return await _getUserFromFirestore(userModel);
     }
     return null;
   }
@@ -135,5 +138,23 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       displayName: user.displayName ?? '',
       photoURL: user.photoURL ?? '',
     );
+  }
+
+  Future<UserModel> _getUserFromFirestore(UserModel user) async {
+    final databaseRef = FirebaseFirestore.instance.collection('Accounts');
+    String docName = user.email.substring(0, user.email.indexOf('@'));
+    DocumentSnapshot<Map<String, dynamic>> userdata =
+        await databaseRef.doc(docName.trim()).get();
+    if (userdata.exists) {
+      final data = userdata.data() as Map<String, dynamic>;
+      return UserModel(
+        uid: user.uid,
+        email: data['email'],
+        displayName: data['name'],
+        photoURL: "",
+      );
+    } else {
+      return user;
+    }
   }
 }

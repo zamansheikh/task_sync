@@ -70,19 +70,19 @@ Future<void> init() async {
   sl.registerLazySingleton(() => UpdateTaskUseCase(sl()));
 
   // Bloc and Cubit registrations
-  sl.registerFactory(() => SplashCubit(
+  sl.registerLazySingleton(() => SplashCubit(
         sl(),
       ));
-  sl.registerFactory(() => HomeCubit(
+  sl.registerLazySingleton(() => HomeCubit(
         authBloc: sl(),
         taskBloc: sl(),
       ));
-  sl.registerFactory(() => AuthBloc(
+  sl.registerLazySingleton(() => AuthBloc(
         checkAuthStatusUseCase: sl(),
         loginUseCase: sl(),
         logoutUseCase: sl(),
       ));
-  sl.registerFactory(() => TaskBloc(
+  sl.registerLazySingleton(() => TaskBloc(
         getAllTasksUseCase: sl(),
         insertTaskUseCase: sl(),
         updateTaskUseCase: sl(),

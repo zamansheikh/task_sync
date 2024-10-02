@@ -21,12 +21,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     // Check if user is authenticated
     on<CheckAuthEvent>((event, emit) async {
       emit(AuthLoading());
+
       final Either<Failure, UserModel?> authStatus =
           await checkAuthStatusUseCase();
 
       authStatus.fold(
         (failure) => emit(AuthError('Error checking authentication status.')),
         (user) {
+          print('Checking auth status...$user');
           if (user != null) {
             emit(AuthenticatedState(user));
           } else {
