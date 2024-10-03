@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:task_sync/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:task_sync/features/auth/presentation/bloc/auth_state.dart';
+import 'package:task_sync/features/task/presentation/bloc/task_bloc.dart';
 import 'package:task_sync/features/task/presentation/cubit/home_cubit.dart';
 import 'package:task_sync/features/task/presentation/home_page/new_task/components/addtask_body.dart';
+import 'package:task_sync/injection_container.dart';
 import '../../../../core/constants/app_color.dart';
 import '../../../../core/constants/app_icons.dart';
 import '../../../../core/utils/utils.dart';
@@ -20,7 +21,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
+  @override
+  void initState() {
+    context.read<HomeCubit>().loadDataAndUser();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +54,6 @@ class _HomePageState extends State<HomePage> {
             ),
           );
         }
-        print("${state.user?.displayName} User not found");
         return Scaffold(
           backgroundColor: black,
           floatingActionButton: GestureDetector(
@@ -57,8 +61,15 @@ class _HomePageState extends State<HomePage> {
               context: context,
               backgroundColor: Colors.black,
               isScrollControlled: true,
-              builder: (BuildContext context) {
-                return TaskBody();
+              builder: (BuildContext modalContext) {
+                return MultiBlocProvider(
+                  providers: [
+                    BlocProvider.value(value: sl<TaskBloc>()),
+                    BlocProvider.value(value: sl<AuthBloc>()),
+                  ],
+                  child: TaskBody(
+                      parentContext: context), // Pass the parent context
+                );
               },
             ),
             child: Container(
@@ -101,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                       Column(
                         children: [
                           Text(
-                            'Hi, ${state.user?.email}',
+                            'Hi, ${state.user?.displayName}',
                             style: const TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold,
@@ -161,7 +172,9 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 15,
                 ),
-                ProgressTask(),
+                ProgressTask(
+                  taskList: state.tasks,
+                ),
                 const SizedBox(
                   height: 30,
                 ),

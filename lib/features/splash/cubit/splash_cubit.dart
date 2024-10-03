@@ -15,11 +15,9 @@ class SplashCubit extends Cubit<SplashState> {
     // Listen for changes in the AuthBloc's state
     while (authBloc.state is AuthInitial || authBloc.state is AuthLoading) {
       await Future.delayed(const Duration(milliseconds: 200), () {
-        print("Waiting for AuthBloc to finish...");
       });
     }
     final authState = authBloc.state;
-    print("authState is now: $authState");
     if (authState is AuthenticatedState) {
       emit(SplashLoggedIn(authState.user.uid));
     } else if (authState is UnauthenticatedState) {

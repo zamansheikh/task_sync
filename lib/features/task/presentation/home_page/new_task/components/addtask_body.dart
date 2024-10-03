@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:task_sync/core/utils/utils.dart';
+import 'package:task_sync/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:task_sync/features/auth/presentation/bloc/auth_state.dart';
 import 'package:task_sync/features/task/data/datasources/db_helper.dart';
 import 'package:task_sync/features/task/data/models/task_model.dart';
+import 'package:task_sync/features/task/presentation/bloc/task_bloc.dart';
 import 'package:task_sync/features/task/presentation/home_page/new_task/components/progress_picker.dart';
 import 'package:task_sync/features/task/presentation/home_page/new_task/components/title.dart';
 import 'package:task_sync/features/task/presentation/home_page/new_task/components/upper_body.dart';
@@ -14,7 +18,9 @@ import 'datetime_row.dart';
 import 'image_container_list.dart';
 
 class TaskBody extends StatefulWidget {
-  const TaskBody({super.key});
+  final BuildContext parentContext;
+
+  const TaskBody({super.key, required this.parentContext});
 
   @override
   State<TaskBody> createState() => _TaskBodyState();
@@ -28,106 +34,44 @@ class _TaskBodyState extends State<TaskBody> {
   bool categoryFocus = false;
   bool descriptionFocus = false;
   bool loading = false;
+  double progressValue = 0.0;
   double progress = 0.0;
-  TextEditingController title = TextEditingController();
-  TextEditingController description = TextEditingController();
-  TextEditingController category = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
   String time = '';
   String date = '';
-  insertDataInDatabase() async {
-    try {
-      loading = true;
-      await DbHelper()
-          .insert(
-        TaskModel(
-            progress: progress.toInt().toString(),
-            status: 'unComplete',
-            id: DateTime.now().microsecondsSinceEpoch.toString(),
-            time: time,
-            date: date,
-            periority: lowPeriority ? 'High' : 'Low',
-            description: description.text.toString(),
-            category: category.text.toString(),
-            title: title.text.toString(),
-            image: Utils.getImage()[selectedImageIndex]!,
-            show: 'yes'),
-        "UID for USER",
-      )
-          .then((value) async {
-        // homeController.getTaskData();
-        title.clear();
-        category.clear();
-        date = '';
-        time = '';
-        progress = 0.0;
-        selectedImageIndex = 1;
-        await Future.delayed(const Duration(milliseconds: 700));
-        loading = false;
 
-        // Get.back();
-      }).onError((error, stackTrace) {
-        loading = false;
-      });
-    } catch (e) {
-      loading = false;
+  bool verifyField(BuildContext context) {
+    if (titleController.text.toString().isEmpty) {
       Utils.showSnackBar(
         context,
-        'Warning',
-        e.toString(),
-        const Icon(
-          FontAwesomeIcons.triangleExclamation,
-          color: Colors.pinkAccent,
-        ),
+        'Add title of your task',
       );
+      return false; // Return false if validation fails
     }
-  }
-
-  showProgressPicker(BuildContext context) {
-    if (title.text.toString().isEmpty) {
+    if (categoryController.text.toString().isEmpty) {
       Utils.showSnackBar(
-          context,
-          'Warning',
-          'Add title of your task',
-          const Icon(
-            FontAwesomeIcons.triangleExclamation,
-            color: Colors.pinkAccent,
-          ));
-      return;
-    }
-    if (category.text.toString().isEmpty) {
-      Utils.showSnackBar(
-          context,
-          'Warning',
-          'Add category of your task',
-          const Icon(
-            FontAwesomeIcons.triangleExclamation,
-            color: Colors.pinkAccent,
-          ));
-      return;
+        context,
+        'Add category of your task',
+      );
+      return false;
     }
     if (date.isEmpty) {
       Utils.showSnackBar(
-          context,
-          'Warning',
-          'Add date for your task',
-          const Icon(
-            FontAwesomeIcons.triangleExclamation,
-            color: Colors.pinkAccent,
-          ));
-      return;
+        context,
+        'Add date for your task',
+      );
+      return false;
     }
     if (int.parse(Utils.getDaysDiffirece(date)) < 0) {
       Utils.showSnackBar(
-          context,
-          'Warning',
-          'Please select correct date',
-          const Icon(
-            FontAwesomeIcons.triangleExclamation,
-            color: Colors.pinkAccent,
-          ));
-      return;
+        context,
+        'Please select correct date',
+      );
+      return false;
     }
-    ProgressPicker(context);
+    return true; // Return true if all fields are valid
   }
 
   pickDate(BuildContext context) async {
@@ -219,7 +163,7 @@ class _TaskBodyState extends State<TaskBody> {
               height: 10,
             ),
             AddInputField(
-              controller: category,
+              controller: categoryController,
               focus: categoryFocus,
               onTap: () => setCategoryFocus(),
               onTapOutSide: () => onTapOutside(),
@@ -240,7 +184,7 @@ class _TaskBodyState extends State<TaskBody> {
               height: 10,
             ),
             AddInputField(
-              controller: description,
+              controller: descriptionController,
               focus: descriptionFocus,
               onTap: () => setDescriptionFocus(),
               onTapOutSide: () => onTapOutside(),
@@ -258,8 +202,59 @@ class _TaskBodyState extends State<TaskBody> {
               text: 'Create Task',
               loading: loading,
               onTap: () async {
-                // controller.insertDataInDatabase();
-                showProgressPicker(context);
+                setState(() {
+                  loading = true;
+                });
+                final bool isValid = verifyField(context);
+
+                // Check if fields are valid before proceeding
+                if (!isValid) {
+                  
+                  return; // Return early if validation fails
+                }
+
+                showProgressPickerDialog(
+                  context,
+                  progressValue,
+                  (newValue) {
+                    setState(() {
+                      progressValue =
+                          newValue; // Update the value only when "OK" is pressed
+                    });
+                    print(progressValue);
+                  },
+                  () {
+                    final String uid =
+                        (context.read<AuthBloc>().state as AuthenticatedState)
+                            .user
+                            .uid;
+                    context.read<TaskBloc>().add(
+                          InsertTaskEvent(
+                            TaskModel(
+                              progress: progress.toInt().toString(),
+                              status: 'unComplete',
+                              id: DateTime.now()
+                                  .microsecondsSinceEpoch
+                                  .toString(),
+                              time: time,
+                              date: date,
+                              periority: lowPeriority ? 'High' : 'Low',
+                              description:
+                                  descriptionController.text.toString(),
+                              category: categoryController.text.toString(),
+                              title: titleController.text.toString(),
+                              image: Utils.getImage()[selectedImageIndex]!,
+                              show: 'yes',
+                            ),
+                            uid,
+                          ),
+                        );
+                  },
+                );
+
+                setState(() {
+                  loading = false; // Stop loading after task creation
+                });
               },
             ),
           ],

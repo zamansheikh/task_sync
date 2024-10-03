@@ -34,13 +34,9 @@ class _SignUpState extends State<SignUp> {
       listener: (context, state) {
         if (state is AuthError) {
           Utils.showSnackBar(
-              context,
-              "An error occurred",
-              state.message,
-              const Icon(
-                FontAwesomeIcons.triangleExclamation,
-                color: Colors.red,
-              ));
+            context,
+            state.message,
+          );
         }
         if (state is AuthLoading) {
           setState(() {
@@ -53,13 +49,9 @@ class _SignUpState extends State<SignUp> {
         }
         if (state is AuthenticatedState) {
           Utils.showSnackBar(
-              context,
-              "Success",
-              "You have successfully logged in",
-              const Icon(
-                FontAwesomeIcons.triangleExclamation,
-                color: Colors.red,
-              ));
+            context,
+            "You have successfully logged in",
+          );
           Navigator.pushNamed(context, Routes.homePage);
         }
       },

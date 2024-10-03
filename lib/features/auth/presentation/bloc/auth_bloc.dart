@@ -28,7 +28,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       authStatus.fold(
         (failure) => emit(AuthError('Error checking authentication status.')),
         (user) {
-          print('Checking auth status...$user');
           if (user != null) {
             emit(AuthenticatedState(user));
           } else {

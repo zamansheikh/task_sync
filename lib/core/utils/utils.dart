@@ -1,5 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import '../constants/app_color.dart';
 
@@ -12,20 +13,22 @@ class Utils {
     return error.substring(error.indexOf(']') + 1);
   }
 
-  static void showSnackBar(
-      BuildContext context, String title, String message, Widget icon) {
+  static void showSnackBar(BuildContext context, String message) {
     final snackBar = SnackBar(
       backgroundColor: primaryColor.withOpacity(.4),
       content: Row(
         children: [
-          icon,
+          Icon(
+            FontAwesomeIcons.triangleExclamation,
+            color: Colors.pinkAccent,
+          ),
           SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("Warning", style: TextStyle(fontWeight: FontWeight.bold)),
                 Text(message),
               ],
             ),
@@ -76,8 +79,8 @@ class Utils {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Remove Task'),
-          content: const Text('Are you sure you want to delete this Task?'),
+          title: const Text('Alert'),
+          content: const Text('Are you sure you want to do this action ?'),
           actions: [
             TextButton(
               child: const Text('Cancel'),
@@ -86,7 +89,7 @@ class Utils {
               },
             ),
             TextButton(
-              child: const Text('Remove'),
+              child: const Text('Yes'),
               onPressed: () {
                 onConfirm();
                 Navigator.pop(context);

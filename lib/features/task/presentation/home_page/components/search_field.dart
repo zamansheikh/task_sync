@@ -65,12 +65,11 @@ class _SearchFieldState extends State<SearchField> {
           prefixIcon: Container(
             margin: const EdgeInsets.symmetric(horizontal: 10),
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            // ignore: deprecated_member_use
             child: SvgPicture.asset(
               AppIcon.search,
               height: 20,
               width: 20,
-              color: Colors.grey,
+              colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
             ),
           ),
           suffixIcon: hasText

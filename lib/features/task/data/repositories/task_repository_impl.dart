@@ -13,7 +13,7 @@ class TaskRepositoryImpl implements TaskRepository {
   @override
   Future<Either<Failure, List<TaskModel>>> getAllTasks(String uid) async {
     try {
-      final tasks = await remoteDataSource.getAllTask(uid);
+      final tasks = await  remoteDataSource.getAllTask(uid);
       return Right(tasks);
     } on ServerException {
       return Left(ServerFailure());
